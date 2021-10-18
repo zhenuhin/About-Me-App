@@ -7,13 +7,21 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - IB Outlets
     @IBOutlet var loginTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     
     private let user = User.getUserData()
+    
+    // MARK: - viewDidLoad
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        loginTextField.delegate = self
+        passwordTextField.delegate = self
+        passwordTextField.returnKeyType = .done
+    }
     
     // MARK: - IB Actions
     @IBAction func loginButtonTapped() {
@@ -78,6 +86,19 @@ extension LoginViewController {
     super.touchesBegan(touches, with: event)
         self.view.endEditing(true)
     }
+    
+    // Switching textfields
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == loginTextField {
+            passwordTextField.becomeFirstResponder()
+        } else {
+            passwordTextField.resignFirstResponder()
+            checkInputData()
+        }
+        return true
+    }
+    
     
     
 }
